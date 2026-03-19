@@ -461,7 +461,16 @@ const DashboardScreen = ({ currentUser, navigateTo }) => {
                     <p style={{ margin: '0', fontSize: 'var(--font-size-3xl)', fontWeight: 'var(--font-weight-bold)' }}>{CLAIMS_DATA_SEED.filter(c => USER_DATA.find(u => u.id === c.assignedTo)?.role === ROLES.CLAIMS_EXAMINER).length} Claims</p>
                     <span className="text-secondary" style={{ fontSize: 'var(--font-size-sm)' }}>📊 Avg: 3.5 claims/examiner</span>
                 </Card>
-                <Card onClick={() => navigateTo({ screen: 'CLAIMS_LIST', params: { status: 'Approval Level 1', 'Approval Level 2', 'Approval Level 3' } })}>
+                <Card onClick={() => navigateTo({ 
+  screen: 'CLAIMS_LIST', 
+  params: { 
+    status: [
+      'Approval Level 1',
+      'Approval Level 2',
+      'Approval Level 3'
+    ] 
+  } 
+})}>
                     <h4 style={{ margin: '0 0 var(--spacing-sm) 0', color: 'var(--text-secondary)' }}>Pending Approvals</h4>
                     <p style={{ margin: '0', fontSize: 'var(--font-size-3xl)', fontWeight: 'var(--font-weight-bold)' }}>{CLAIMS_DATA_SEED.filter(c => c.status.includes('Approval Level')).length}</p>
                     <span className="text-secondary" style={{ fontSize: 'var(--font-size-sm)' }}>⏳ Overdue: 2</span>
