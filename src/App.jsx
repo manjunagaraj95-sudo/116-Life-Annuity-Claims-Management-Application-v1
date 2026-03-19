@@ -105,6 +105,11 @@ const WORKFLOW_MILESTONES = [
     { id: 'closed', label: 'Closed', status: [CLAIM_STATUSES.APPROVED, CLAIM_STATUSES.CLOSED, CLAIM_STATUSES.REJECTED, CLAIM_STATUSES.EXCEPTION] },
 ];
 
+const APPROVAL_STATUSES = [
+    CLAIM_STATUSES.APPROVAL_LEVEL_1,
+    CLAIM_STATUSES.APPROVAL_LEVEL_2,
+    CLAIM_STATUSES.APPROVAL_LEVEL_3
+];
 
 let CLAIMS_DATA_SEED = [
     {
@@ -403,7 +408,16 @@ const DashboardScreen = ({ currentUser, navigateTo }) => {
         <>
             <h2 style={{ marginBottom: 'var(--spacing-lg)' }}>Executive Dashboard</h2>
             <div className="card-grid">
-                <Card onClick={() => navigateTo({ screen: 'CLAIMS_LIST' })}>
+                <Card
+  onClick={() =>
+    navigateTo({
+      screen: 'CLAIMS_LIST',
+      params: {
+        status: APPROVAL_STATUSES
+      }
+    })
+  }
+>
                     <h4 style={{ margin: '0 0 var(--spacing-sm) 0', color: 'var(--text-secondary)' }}>Total Claims Submitted</h4>
                     <p style={{ margin: '0', fontSize: 'var(--font-size-3xl)', fontWeight: 'var(--font-weight-bold)' }}>{CLAIMS_DATA_SEED.length}</p>
                     <span className="text-secondary" style={{ fontSize: 'var(--font-size-sm)' }}>📈 +5% from last month</span>
@@ -711,9 +725,11 @@ const ClaimsListScreen = ({ navigateTo, params }) => {
             if (!value) return true; // Skip empty filters
 
             if (key === 'status') {
-                // Handle multiple status values if needed, for simplicity assume one
-                return claim.status === value;
-            }
+    if (Array.isArray(value)) {
+        return value.includes(claim.status);
+    }
+    return claim.status === value;
+}
             if (key === 'assignedTo') {
                 return claim.assignedTo === value;
             }
